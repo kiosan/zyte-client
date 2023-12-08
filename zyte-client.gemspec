@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
     s.name        = 'zyte-client'
-    s.version     = '1.0.3'
+    s.version     = '1.0.4'
     s.date        = '2023-12-08'
     s.summary     = "Ruby library for operating Zyte API."
     s.description = "Ruby library for operating Zyte API."
@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
     ]
     s.homepage    = 'https://github.com/leandrosardi/zyte-client'
     s.license     = 'MIT'
-    s.add_runtime_dependency 'uri', '~> 0.12.2', '>= 0.12.2'
+    s.add_runtime_dependency 'uri', '~> 0.11.2', '>= 0.11.2'
     s.add_runtime_dependency 'net-http', '~> 0.2.0', '>= 0.2.0'
     s.add_runtime_dependency 'json', '~> 2.6.3', '>= 2.6.3'
     s.add_runtime_dependency 'blackstack-core', '~> 1.2.15', '>= 1.2.15'
