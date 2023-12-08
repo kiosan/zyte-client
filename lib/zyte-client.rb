@@ -12,7 +12,7 @@ class ZyteClient
         self.key = h[:key] # mandatory
     end
 
-    def zyte(url)
+    def extract(url)
         input = "{
             \"url\": \"#{url}\",
             \"httpResponseBody\": true
@@ -31,7 +31,7 @@ class ZyteClient
         | jq --raw-output .httpResponseBody \
         | base64 --decode \
         `
-        
+
         return ret
     end # def zyte
     

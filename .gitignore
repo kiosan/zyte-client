@@ -1,4 +1,5 @@
 /examples/*.log
 /examples/*.html
 /examples/*.pem
+/examples/*.json
 config.rb
