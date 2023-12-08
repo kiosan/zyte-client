@@ -1,0 +1,4 @@
+/examples/*.log
+/examples/*.html
+/examples/*.pem
+config.rb
