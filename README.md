@@ -18,5 +18,18 @@ Ruby gem for operating [Zyte.com](https://www.zyte.com/) API.
 gem install zyte-client
 ```
 
+You many need to install the **jq** package too.
+
+```bash
+sudo apt install jq
+```
+
 ## 2. Getting Started
 
+```ruby
+require 'zyte-client'
+url = 'https://www.google.com/search?q=Hola+Mundo'
+client = ZyteClient.new(key: '<your Zyte API key here>')
+html = client.extract(url)
+File.open("getting-started.html", 'w') { |file| file.write(html) }
+```
