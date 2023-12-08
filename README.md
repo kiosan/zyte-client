@@ -1,7 +1,5 @@
 
-THIS PROJECT IS STILL UNDER CONSTRUCTION
-
-![Gem version](https://img.shields.io/gem/v/adspower-client) ![Gem downloads](https://img.shields.io/gem/dt/adspower-client)
+![Gem version](https://img.shields.io/gem/v/zyte-client) ![Gem downloads](https://img.shields.io/gem/dt/zyte-client)
 
 # Zyte Client
 
