@@ -3,7 +3,7 @@ require_relative './config.rb'
 
 url = 'https://www.google.com/search?q=Hola+Mundo'
 client = ZyteClient.new(key: ZYTE_API_KEY)
-html = client.extract(
+ret = client.extract(
     url: url,
     json_parsing: false,
     options: {
@@ -25,5 +25,5 @@ html = client.extract(
         "httpResponseBody": true
     }
 )
-File.open("data/options.html", 'w') { |file| file.write(html) }
-puts html
+File.open("data/parsing.json", 'w') { |file| file.write(ret.to_json) }
+puts ret.to_json
