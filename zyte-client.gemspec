@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
     s.name        = 'zyte-client'
-    s.version     = '1.0.4'
-    s.date        = '2023-12-08'
+    s.version     = '1.0.5'
+    s.date        = '2024-04-22'
     s.summary     = "Ruby library for operating Zyte API."
     s.description = "Ruby library for operating Zyte API."
     s.authors     = ["Leandro Daniel Sardi"]
