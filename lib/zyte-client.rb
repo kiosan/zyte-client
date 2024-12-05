@@ -1,55 +1,52 @@
-require 'uri'
-require 'net/http'
-require 'json'
-require 'blackstack-core'
-#require 'selenium-webdriver'
-#require 'watir'
+require "net/http"
+require "uri"
+require "json"
 
-class ZyteClient    
-    attr_accessor :key
+class ZyteClient
+  ZYTE_ENDPOINT = "https://api.zyte.com/v1/extract".freeze
 
-    def initialize(h={})
-        self.key = h[:key] # mandatory
+  attr_reader :key
+
+  def initialize(key:)
+    @key = key
+  end
+
+  def extract(url:, options: {httpResponseBody: true}, json_parsing: true)
+    response = response_from(options.merge(url: url))
+    if response.code == "200"
+      body = response.body
+      return body unless json_parsing
+
+      parsed = JSON.parse(body)
+      parsed["httpResponseBody"] = Base64.decode64(parsed["httpResponseBody"]) if parsed["httpResponseBody"]
+      parsed
+    else
+      raise ZyteClientError, "Failed to extract data from #{url}. Response: #{response.body}"
     end
+  rescue StandardError => e
+    raise ZyteClientError, "Failed to extract data from #{url}. Error: #{e.message}"
+  end
 
-    # call Zyte API's extract access point.
-    #
-    # url: the URL to extract.
-    # options: additonal Zyte API's options to the default request. Default request is: {"url": url}.
-    # json_parsing: if true, the response is parsed as JSON using jq command, and return the value of the `httpResponseBody` key. Default is true.
-    #
-    def extract(url:, json_parsing: true, options:{}, data_filename: 'zyte.data.json')
-        data = {
-            "url": url,
-        }.merge(options)
-        
-        File.open(data_filename, 'w') { |file| file.write(data.to_json) }
+  private
 
-        if json_parsing
-            cmd = "curl \
-            --silent \
-            --user #{self.key}: \
-            --header 'Content-Type: application/json' \
-            --data @#{data_filename} \
-            --compressed \
-            https://api.zyte.com/v1/extract \
-            | jq --raw-output .httpResponseBody \
-            | base64 --decode 
-            "
-        else
-            cmd = "curl \
-            --silent \
-            --user #{self.key}: \
-            --header 'Content-Type: application/json' \
-            --data @#{data_filename} \
-            --compressed \
-            https://api.zyte.com/v1/extract 
-            "
-        end
+  def response_from(options)
+    Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+      request = request_from(options)
+      http.request(request)
+    end
+  end
 
-        ret = `#{cmd}`
+  def request_from(options)
+    Net::HTTP::Post.new(uri).tap do |req|
+      req["Content-Type"] = "application/json"
+      req.basic_auth(key, "")
+      req.body = options.to_json
+    end
+  end
 
-        return ret
-    end # def zyte
-    
-end # class ZyteClient
+  def uri
+    URI.parse(ZYTE_ENDPOINT)
+  end
+end
+
+class ZyteClientError < StandardError; end
